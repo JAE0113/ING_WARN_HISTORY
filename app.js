@@ -1,6 +1,15 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbyt5PPGqg2Y2ESqn2JFicKN36dyy7G6ri2glw2J3PYZeEJa6LHPUX0hQwGQaAgPFtHa/exec";
 let isSubmitting = false;
 
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
 function submitReport() {
   if (isSubmitting) return;
 
@@ -13,7 +22,7 @@ function submitReport() {
   const loadingText = document.getElementById("loadingText");
 
   if (!reporter || !target || !reason) {
-    console.log("신고자, 신고 대상자, 사유를 모두 입력하세요.");
+    showToast("신고자, 신고 대상자, 사유를 모두 입력하세요.");
     return;
   }
 
@@ -95,6 +104,7 @@ function sendToSheet(data) {
     body: JSON.stringify(data)
   })
     .then(() => {
+      showToast("전송 요청 완료");
       console.log("전송 요청 완료:", {
         reporter: data.reporter,
         target: data.target,
@@ -109,6 +119,7 @@ function sendToSheet(data) {
       document.getElementById("photo").value = "";
     })
     .catch(error => {
+      showToast("전송 실패");
       console.log("전송 실패:", error);
     })
     .finally(() => {
