@@ -24,6 +24,7 @@ function closeToast() {
   toast.classList.remove("show");
   if (toastTimeout) {
     clearTimeout(toastTimeout);
+    toastTimeout = null;
   }
 }
 
