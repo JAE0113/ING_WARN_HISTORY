@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbx48ujp9i_Tzl9XnZv1cRzKzXpxhXtzR0XolK35iG1dQE2eCSaVJD_G8sqAYcx5fuYt/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby2zUpqzK6Mv2FWcOA1oUf68COhnaWHQhx8RzTnsjipZ1RPp0bvLRXjJLhZvSphyapY/exec";
 
 function submitReport() {
   const reporter = document.getElementById("reporter").value.trim();
