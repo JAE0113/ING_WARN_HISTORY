@@ -1,60 +1,25 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbz_laQVF0AAJ8vbBj0ZkguNBMJFFGGi1qVeOtMIykxPxUng7I7ZFkRMuHuX918CXV1Q/exec";
-
-function submitData() {
-  const pw = document.getElementById("pw").value.trim();
-  const name = document.getElementById("name").value.trim();
+function submitReport() {
+  const reporter = document.getElementById("reporter").value.trim();
+  const target = document.getElementById("target").value.trim();
   const reason = document.getElementById("reason").value.trim();
 
-  const message = document.getElementById("message");
-  const result = document.getElementById("result");
-
-  if (!pw) {
-    message.textContent = "비밀번호를 입력하세요.";
-    message.style.color = "red";
-    return;
-  }
-
-  if (!name || !reason) {
-    message.textContent = "이름과 사유를 모두 입력하세요.";
-    message.style.color = "red";
+  if (!reporter || !target || !reason) {
+    console.log("신고자, 신고 대상자, 사유를 모두 입력하세요.");
     return;
   }
 
   const data = {
-    password: pw,
-    name: name,
+    reporter: reporter,
+    target: target,
     reason: reason,
-    warning_date: new Date().toLocaleString("ko-KR", {
+    created_at: new Date().toLocaleString("ko-KR", {
       timeZone: "Asia/Seoul"
     })
   };
 
-  fetch(API_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify(data)
-  })
-    .then(() => {
-      message.textContent = "저장 요청 완료";
-      message.style.color = "green";
+  console.log("전송 데이터:", data);
 
-      result.textContent = JSON.stringify(
-        {
-          name: data.name,
-          reason: data.reason,
-          warning_date: data.warning_date
-        },
-        null,
-        2
-      );
-
-      document.getElementById("pw").value = "";
-      document.getElementById("name").value = "";
-      document.getElementById("reason").value = "";
-    })
-    .catch(error => {
-      message.textContent = "요청 중 오류가 발생했습니다.";
-      message.style.color = "red";
-      console.error(error);
-    });
+  document.getElementById("reporter").value = "";
+  document.getElementById("target").value = "";
+  document.getElementById("reason").value = "";
 }
