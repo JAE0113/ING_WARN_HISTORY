@@ -30,24 +30,29 @@ function submitData() {
   };
 
   fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify(data)
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "text/plain"
+  },
+  body: JSON.stringify(data)
+})
+  .then(() => {
+    message.textContent = "저장 요청 완료";
+    message.style.color = "green";
+    result.textContent = JSON.stringify(
+      {
+        name: data.name,
+        reason: data.reason,
+        warning_date: data.warning_date
+      },
+      null,
+      2
+    );
   })
-    .then(response => response.json())
-    .then(resultData => {
-      if (!resultData.success) {
-        message.textContent = resultData.message || "저장 실패";
-        message.style.color = "red";
-        return;
-      }
-
-      message.textContent = "저장 완료";
-      message.style.color = "green";
-      result.textContent = JSON.stringify(data, null, 2);
-    })
-    .catch(error => {
-      message.textContent = "요청 중 오류가 발생했습니다.";
-      message.style.color = "red";
-      console.error(error);
-    });
+  .catch(error => {
+    message.textContent = "요청 중 오류가 발생했습니다.";
+    message.style.color = "red";
+    console.error(error);
+  });
 }
