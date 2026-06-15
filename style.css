@@ -38,3 +38,14 @@ button {
   border: none;
   border-radius: 6px;
 }
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#loadingText {
+  margin-top: 12px;
+  text-align: center;
+  font-weight: bold;
+}
