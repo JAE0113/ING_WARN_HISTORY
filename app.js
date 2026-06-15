@@ -1,4 +1,4 @@
-const PASSWORD = "1234";
+const API_URL = "https://script.google.com/macros/s/AKfycbxoRAumfciiW6uOyrgl6ngnR8bIXeKSjOX_bhAwT0jinT3HRLy_NP5yBQqvDvXdJ_3W/exec";
 
 function submitData() {
   const pw = document.getElementById("pw").value.trim();
@@ -8,8 +8,8 @@ function submitData() {
   const message = document.getElementById("message");
   const result = document.getElementById("result");
 
-  if (pw !== PASSWORD) {
-    message.textContent = "비밀번호가 틀렸습니다.";
+  if (!pw) {
+    message.textContent = "비밀번호를 입력하세요.";
     message.style.color = "red";
     return;
   }
@@ -21,16 +21,33 @@ function submitData() {
   }
 
   const data = {
+    password: pw,
     name: name,
     reason: reason,
-    created_at: new Date().toISOString()
+    warning_date: new Date().toLocaleString("ko-KR", {
+      timeZone: "Asia/Seoul"
+    })
   };
 
-  message.textContent = "입력 완료";
-  message.style.color = "green";
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(resultData => {
+      if (!resultData.success) {
+        message.textContent = resultData.message || "저장 실패";
+        message.style.color = "red";
+        return;
+      }
 
-  result.textContent = JSON.stringify(data, null, 2);
-
-  // 현재 예제는 저장 없이 화면에만 표시
-  console.log(data);
+      message.textContent = "저장 완료";
+      message.style.color = "green";
+      result.textContent = JSON.stringify(data, null, 2);
+    })
+    .catch(error => {
+      message.textContent = "요청 중 오류가 발생했습니다.";
+      message.style.color = "red";
+      console.error(error);
+    });
 }
