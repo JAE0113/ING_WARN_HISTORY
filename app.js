@@ -69,7 +69,13 @@ function sendToSheet(data) {
     body: JSON.stringify(data)
   })
     .then(() => {
-      console.log("전송 요청 완료:", data);
+      console.log("전송 요청 완료:", {
+        reporter: data.reporter,
+        target: data.target,
+        reason: data.reason,
+        report_date: data.report_date,
+        has_photo: !!data.photo
+      });
 
       document.getElementById("reporter").value = "";
       document.getElementById("target").value = "";
