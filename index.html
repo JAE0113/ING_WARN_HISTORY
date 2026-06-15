@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>간이 입력 페이지</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="box">
+    <h1>사유 입력</h1>
+
+    <input id="pw" type="password" placeholder="비밀번호" />
+    <input id="name" type="text" placeholder="이름" />
+    <textarea id="reason" placeholder="사유"></textarea>
+
+    <button onclick="submitData()">제출</button>
+
+    <p id="message"></p>
+
+    <hr />
+
+    <h2>입력 미리보기</h2>
+    <pre id="result"></pre>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
