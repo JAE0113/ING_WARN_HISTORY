@@ -12,6 +12,10 @@ body {
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
+h1 {
+  text-align: center;
+}
+
 input,
 textarea,
 button {
@@ -23,7 +27,7 @@ button {
 }
 
 textarea {
-  height: 120px;
+  height: 180px;
   resize: vertical;
 }
 
@@ -33,9 +37,4 @@ button {
   color: white;
   border: none;
   border-radius: 6px;
-}
-
-#message {
-  margin-top: 12px;
-  font-weight: bold;
 }
