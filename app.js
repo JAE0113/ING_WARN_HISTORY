@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwMZfj_S0Ig-Gxg1j08QtKbIvke4v-_19_SIpvN5cLPWYBuNBMwuDZziPnef1U3VCwS/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyU-1LQCxIjbeyUrAEA9X3Wq_nMeKK_zyGkIOnmKugi9OqsDQfaXKjlJQGWQijjJGxi/exec";
 
 function submitData() {
   const pw = document.getElementById("pw").value.trim();
