@@ -2,9 +2,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyGw5QsvliQX3CCzHj-a9Z6
 let isSubmitting = false;
 
 function submitReport() {
-  if (isSubmitting) {
-    return;
-  }
+  if (isSubmitting) return;
 
   const reporter = document.getElementById("reporter").value.trim();
   const target = document.getElementById("target").value.trim();
@@ -25,9 +23,9 @@ function submitReport() {
   loadingText.style.display = "block";
 
   const data = {
-    reporter: reporter,
-    target: target,
-    reason: reason,
+    reporter,
+    target,
+    reason,
     report_date: new Date().toLocaleString("ko-KR", {
       timeZone: "Asia/Seoul"
     }),
@@ -35,31 +33,59 @@ function submitReport() {
   };
 
   if (photo) {
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      data.photo = {
-        name: photo.name,
-        type: photo.type,
-        content: reader.result.split(",")[1]
-      };
-
-      sendToSheet(data);
-    };
-
-    reader.onerror = function () {
-      console.log("사진 읽기 실패");
-
-      isSubmitting = false;
-      submitBtn.disabled = false;
-      submitBtn.textContent = "전송";
-      loadingText.style.display = "none";
-    };
-
-    reader.readAsDataURL(photo);
+    compressImage(photo, 1280, 0.75)
+      .then(compressed => {
+        data.photo = compressed;
+        sendToSheet(data);
+      })
+      .catch(error => {
+        console.log("사진 압축 실패:", error);
+        resetSubmitState();
+      });
   } else {
     sendToSheet(data);
   }
+}
+
+function compressImage(file, maxWidth, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const img = new Image();
+
+      img.onload = function () {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+
+        resolve({
+          name: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+          type: "image/jpeg",
+          content: dataUrl.split(",")[1]
+        });
+      };
+
+      img.onerror = reject;
+      img.src = event.target.result;
+    };
+
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 function sendToSheet(data) {
@@ -86,13 +112,17 @@ function sendToSheet(data) {
       console.log("전송 실패:", error);
     })
     .finally(() => {
-      isSubmitting = false;
-
-      const submitBtn = document.getElementById("submitBtn");
-      const loadingText = document.getElementById("loadingText");
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = "전송";
-      loadingText.style.display = "none";
+      resetSubmitState();
     });
+}
+
+function resetSubmitState() {
+  isSubmitting = false;
+
+  const submitBtn = document.getElementById("submitBtn");
+  const loadingText = document.getElementById("loadingText");
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = "전송";
+  loadingText.style.display = "none";
 }
