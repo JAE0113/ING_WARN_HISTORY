@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwtTn5NdoGIuWHXQhuo4sFU9shBG0NXCTW9HF3Ku-Jm08VJ0zLslRK_Q43JGpkTCM1P/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxsyh0XhbVYicLAG1YEpwhs46BE6mXgjyv0stYlLUbvYWM7e_U8ZVYpd6lcAtU1qRsL/exec";
 let isSubmitting = false;
 
 function submitReport() {
