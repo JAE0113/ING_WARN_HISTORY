@@ -1,13 +1,30 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbyt5PPGqg2Y2ESqn2JFicKN36dyy7G6ri2glw2J3PYZeEJa6LHPUX0hQwGQaAgPFtHa/exec";
 let isSubmitting = false;
 
+let toastTimeout;
+
 function showToast(message) {
   const toast = document.getElementById("toast");
-  toast.textContent = message;
+  const toastMessage = document.getElementById("toast-message");
+  
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+  }
+  
+  toastMessage.textContent = message;
   toast.classList.add("show");
-  setTimeout(() => {
+  
+  toastTimeout = setTimeout(() => {
     toast.classList.remove("show");
   }, 3000);
+}
+
+function closeToast() {
+  const toast = document.getElementById("toast");
+  toast.classList.remove("show");
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+  }
 }
 
 function submitReport() {

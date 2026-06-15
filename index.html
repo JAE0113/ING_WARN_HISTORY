@@ -19,7 +19,15 @@
     <p id="loadingText" style="display:none;">전송 중입니다...</p>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <div class="toast-container">
+    <div id="toast" class="toast">
+      <div class="toast-header">
+        <strong class="toast-title">알림</strong>
+        <button type="button" class="toast-close" onclick="closeToast()">&times;</button>
+      </div>
+      <div class="toast-body" id="toast-message"></div>
+    </div>
+  </div>
 
   <script src="./app.js?v=9"></script>
 </body>
