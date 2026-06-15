@@ -1,3 +1,5 @@
+const API_URL = "https://script.google.com/macros/s/AKfycbwIQpnhkT6j3EFUTdjLq6VuRvD-470X2ZhBKZId21T7dvVI-fmEzWQwIvnInJiq8MNn/exec";
+
 function submitReport() {
   const reporter = document.getElementById("reporter").value.trim();
   const target = document.getElementById("target").value.trim();
@@ -12,14 +14,24 @@ function submitReport() {
     reporter: reporter,
     target: target,
     reason: reason,
-    created_at: new Date().toLocaleString("ko-KR", {
+    report_date: new Date().toLocaleString("ko-KR", {
       timeZone: "Asia/Seoul"
     })
   };
 
-  console.log("전송 데이터:", data);
+  fetch(API_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data)
+  })
+    .then(() => {
+      console.log("전송 요청 완료:", data);
 
-  document.getElementById("reporter").value = "";
-  document.getElementById("target").value = "";
-  document.getElementById("reason").value = "";
+      document.getElementById("reporter").value = "";
+      document.getElementById("target").value = "";
+      document.getElementById("reason").value = "";
+    })
+    .catch(error => {
+      console.log("전송 실패:", error);
+    });
 }
